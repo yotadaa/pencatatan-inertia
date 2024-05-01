@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { menu, storeCurrentMenu, retrieveCurrentMenu } from '../../assets/nav/identity';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import logoutIcon from '../../assets/logout.png';
+import { InertiaLink } from '@inertiajs/inertia-react';
 
 function NavList({ isShrunk, pinNav }) {
 
@@ -17,13 +17,12 @@ function NavList({ isShrunk, pinNav }) {
         >
             <ul>
                 {menu.map((item, index) => (
-                    <Link to={item.path} key={index}>
+                    <InertiaLink key={index} href={route(item.path)}>
                         <motion.li
                             className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2`}
                             style={{
                                 gap: 10,
                             }}
-                            // '#F8FAFC'
                             animate={{
                                 backgroundColor: index === currentMenu ? item.bg : '#F8FAFC',
                                 transform: !isShrunk && !pinNav ? 'translateX(0px)' : 'translateX(0px)',
@@ -53,7 +52,7 @@ function NavList({ isShrunk, pinNav }) {
                                 {item.name}
                             </motion.div>
                         </motion.li>
-                    </Link>
+                    </InertiaLink >
                 ))}
                 <motion.li
                     className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2 `}
@@ -91,3 +90,4 @@ function NavList({ isShrunk, pinNav }) {
 }
 
 export default NavList;
+

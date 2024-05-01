@@ -16,7 +16,7 @@ export const menu = [
         name: 'Dashboard',
         icon: dashboardIcon,
         bg: '#E2E8F0',
-        path: '/dashboard',
+        path: 'dashboard',
         element: Content
 
     },
@@ -24,35 +24,35 @@ export const menu = [
         name: 'Items',
         icon: itemIcon,
         bg: '#E2E8F0',
-        path: '/items',
+        path: 'items',
         element: Items
     },
     {
         name: 'Inbound',
         icon: inboundIcon,
         bg: '#FDBA74',
-        path: '/inbound',
+        path: 'inbound',
         element: Inbound
     },
     {
         name: 'Outbound',
         icon: outboundIcon,
         bg: '#6EE7B7',
-        path: '/outbound',
+        path: 'outbound',
         element: Outbound
     },
     {
         name: 'User',
         icon: userIcon,
         bg: '#E2E8F0',
-        path: '/users',
+        path: 'users',
         element: Users
     },
     {
         name: 'Pengaturan',
         icon: settingsIcon,
         bg: '#E2E8F0',
-        path: '/settings',
+        path: 'settings',
         element: Settings
     },
 ];

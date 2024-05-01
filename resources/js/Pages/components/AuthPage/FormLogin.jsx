@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import Context from "../../provider/context";
 import Input from "./Input";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { InertiaLink } from "@inertiajs/inertia-react";
 
 
 
@@ -78,7 +78,7 @@ export default function FormLogin() {
                     <span className="py-1 px-3">Login</span>
                 </Button>
                 <section className="text-sm mt-3">
-                    Belum punya akun? <Link to="/register" className="text-blue-700 font-semibold" >Daftar sekarang</Link>
+                    Belum punya akun? <InertiaLink href={route("register")} className="text-blue-700 font-semibold" >Daftar sekarang</InertiaLink>
                 </section>
             </footer>
         </form>

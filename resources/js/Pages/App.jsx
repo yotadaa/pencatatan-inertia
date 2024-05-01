@@ -7,11 +7,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 
-function App() {
+function App({ isAuth, mode = true }) {
+    console.log(isAuth, mode)
     return (
-        <BrowserRouter>
-            <Root />
-        </BrowserRouter>
+        <Root isAuth={isAuth} mode={mode} />
     );
 }
 

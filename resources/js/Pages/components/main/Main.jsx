@@ -45,13 +45,13 @@ function Main({ Element }) {
     const [isAuth, setIsAuth] = useState(false);
     const toNotIncluded = ["dashboard", "register"];
 
-    if (getUrls !== "login" || getUrls !== "register") {
-        if (!isAuth) {
-            return (
-                <Navigate to="/login" />
-            )
-        }
-    }
+    // if (getUrls !== "login" || getUrls !== "register") {
+    //     if (!isAuth) {
+    //         return (
+    //             <Navigate to="/login" />
+    //         )
+    //     }
+    // }
 
     return (
         <div className={`w-screen h-screen ${theme.base} overflow-hidden flex`}

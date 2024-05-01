@@ -5,9 +5,9 @@ import { Button } from "@mui/material";
 import Context from "../../provider/context";
 import { useContext } from "react";
 import FormLogin from "./FormLogin";
-import { Link } from "react-router-dom";
+import { InertiaLink } from "@inertiajs/inertia-react";
 
-const FormRegister = () => {
+const Register = () => {
     const { windowSize } = useContext(Context);
     const [formProps, setFormProps] = useState({
         name: '',
@@ -102,7 +102,7 @@ const FormRegister = () => {
                     <span className="py-1 px-3">Daftar</span>
                 </Button>
                 <section className="text-sm mt-3">
-                    Atau <Link to="/login" className="text-blue-700 font-semibold">Login menggunakan akun kamu</Link>
+                    Atau <InertiaLink href={route("login")} className="text-blue-700 font-semibold">Login menggunakan akun kamu</InertiaLink>
                 </section>
             </footer>
         </form>
@@ -163,7 +163,7 @@ export default function RegisterPage({ mode }) {
                     flexDirection: windowSize.w > 550 ? 'row' : 'column',
                 }}
             >
-                {mode ? <FormRegister /> : <FormLogin />}
+                {mode ? <Register /> : <FormLogin />}
                 <Images width={windowSize.w} />
             </div>
         </div>

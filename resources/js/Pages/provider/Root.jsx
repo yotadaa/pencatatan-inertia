@@ -1,11 +1,12 @@
 
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Context from './context';
-import URLRoute from '../components/routes/URLRoute';
-import Dashboard from '../components/dashboard/Dashboard'
+import FormRegister from '../components/AuthPage/FormRegister';
+import Dashboard from '../components/dashboard/Dashboard';
+import Main from '../components/main/Main';
 
-const Root = () => {
+const Root = ({ isAuth, mode }) => {
 
     const [navHover, setNavHover] = useState(false)
     const [isShrunk, setIsShrunk] = useState(false);
@@ -45,8 +46,8 @@ const Root = () => {
 
     return (
         <Context.Provider value={contextValue}>
-            {/* <URLRoute /> */}
-            <Main Element={Dashboard} />
+            {isAuth ? <Main Element={Dashboard} /> : <FormRegister mode={mode} />}
+            {/* <Main Element={Dashboard} /> */}
         </Context.Provider>
     )
 };
