@@ -3,8 +3,18 @@ import { menu, storeCurrentMenu, retrieveCurrentMenu } from '../../assets/nav/id
 import { useState } from 'react';
 import logoutIcon from '../../assets/logout.png';
 import { InertiaLink } from '@inertiajs/inertia-react';
+import { Inertia } from "@inertiajs/inertia";
 
 function NavList({ isShrunk, pinNav }) {
+
+    const attemptLogout = async () => {
+        try {
+            Inertia.post('/auth/logout')
+        } catch (e) {
+            console.error(e);
+            console.log('Login tidak berhasil')
+        }
+    }
 
     const [currentMenu, setCurrentMenu] = useState(parseInt(retrieveCurrentMenu()) | 0);
 
@@ -22,9 +32,10 @@ function NavList({ isShrunk, pinNav }) {
                             className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2`}
                             style={{
                                 gap: 10,
+                                backgroundColor: index === currentMenu ? item.bg : 'transparent',
                             }}
                             animate={{
-                                backgroundColor: index === currentMenu ? item.bg : '#F8FAFC',
+                                backgroundColor: index === currentMenu ? item.bg : 'transparent',
                                 transform: !isShrunk && !pinNav ? 'translateX(0px)' : 'translateX(0px)',
                                 width: isShrunk || pinNav ? 215 : 40
                             }}
@@ -40,6 +51,9 @@ function NavList({ isShrunk, pinNav }) {
                             <motion.img
                                 src={item.icon}
                                 className={`w-10`}
+                                style={{
+                                    padding: !isShrunk && !pinNav ? 3 : 8
+                                }}
                                 animate={{
                                     padding: !isShrunk && !pinNav ? 3 : 8
                                 }}
@@ -71,6 +85,9 @@ function NavList({ isShrunk, pinNav }) {
                     <motion.img
                         src={logoutIcon}
                         className={`w-10`}
+                        style={{
+                            padding: !isShrunk && !pinNav ? 3 : 8
+                        }}
                         animate={{
                             padding: !isShrunk && !pinNav ? 3 : 8
                         }}
@@ -80,6 +97,9 @@ function NavList({ isShrunk, pinNav }) {
                             opacity: pinNav || isShrunk ? 1 : 0
                         }}
                         className='font-semibold'
+                        onClick={() => {
+                            attemptLogout();
+                        }}
                     >
                         Logout
                     </motion.div>

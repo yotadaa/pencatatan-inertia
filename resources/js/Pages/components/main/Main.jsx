@@ -4,16 +4,13 @@ import Navigasi from "../nav/Navigasi";
 import { lightTheme } from "../theme";
 import { useContext } from "react";
 import Context from "../../provider/context";
-import { Navigate } from "react-router-dom";
+import Content from "./Content";
+import { Link } from "@inertiajs/react";
 
-function Main({ Element }) {
+function Main({ isAuth, Element }) {
 
     const getUrls = () => {
         return window.location.href.split("/").slice(-1)
-    }
-
-    const shouldIgnored = () => {
-        return getUrls === 'login';
     }
 
     const [navPos, setNavPos] = useState({
@@ -21,7 +18,7 @@ function Main({ Element }) {
         y: 0
     })
 
-    const { navHover, wideWindow, setRightNav, rightNav } = useContext(Context);
+    const { navHover, wideWindow, setRightNav, rightNav, isShrunk } = useContext(Context);
     const [mouseDown, setMouseDown] = useState(false);
 
     const resetNavPos = () => {
@@ -42,16 +39,14 @@ function Main({ Element }) {
         }
     }, [wideWindow])
 
-    const [isAuth, setIsAuth] = useState(false);
-    const toNotIncluded = ["dashboard", "register"];
 
-    // if (getUrls !== "login" || getUrls !== "register") {
-    //     if (!isAuth) {
-    //         return (
-    //             <Navigate to="/login" />
-    //         )
-    //     }
-    // }
+    useEffect(() => {
+        if (getUrls !== "login" || getUrls !== "register") {
+            if (!isAuth) {
+                window.location.href = '/login';
+            }
+        }
+    }, [])
 
     return (
         <div className={`w-screen h-screen ${theme.base} overflow-hidden flex`}
@@ -83,7 +78,7 @@ function Main({ Element }) {
             }}
         >
             <Navigasi props={{ navPos, mouseDown }} className='' />
-            <Element />
+            <Content Element={Element} />
 
         </div>
     )

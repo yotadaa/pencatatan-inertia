@@ -1,7 +1,7 @@
 import Context from "../../provider/context";
 import { useContext } from "react";
 
-const Content = () => {
+const Content = ({ Element }) => {
 
     const { rightNav, wideWindow } = useContext(Context);
 
@@ -13,9 +13,7 @@ const Content = () => {
                 zIndex: wideWindow ? 0 : -1,
             }}
         >
-            <section className="w-full h-full">
-                Hello
-            </section>
+            <Element />
         </main>
     )
 }

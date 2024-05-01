@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { menu } from '../../assets/nav/identity';
-import RegisterPage from "../AuthPage/FormRegister";
+import RegisterPage from "../AuthPage/Index";
 import Main from "../main/Main";
 
 

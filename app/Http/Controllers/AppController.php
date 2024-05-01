@@ -3,43 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class AppController extends Controller
 {
     //
+
+    public function __construct() {
+    }
+
+    private function shouldLogin() {
+        return !auth()->check();
+    }
+
     public function index() {
-        return Inertia::render('App', ['isAuth' => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check()]);
     }
 
     public function register() {
-        return Inertia::render('App', ['isAuth' => false]);
+        if (auth()->check()) {
+            return Redirect::route('index');
+        }
+        return Inertia::render('App', ['isAuth' => auth()->check()]);
     }
 
     public function login() {
-        return Inertia::render('App', ['isAuth' => false, "mode" => false]);
+
+        if (auth()->check()) {
+            return Redirect::route('index');
+        }
+
+        $failed = session()->get('loginFailed');
+        $message = session()->get('message');
+
+        session()->put('loginFailed', false);
+        session()->put('message', '');
+
+        return Inertia::render('App', ['isAuth' => auth()->check(), "mode" => false, "failed"=> $failed, "message"=>$message]);
     }
 
     public function dashboard() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
 
     public function items() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
 
     public function inbound() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
     public function outbound() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
 
     public function users() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
 
     public function settings() {
-        return Inertia::render('App', ['isAuth' => true, "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
     }
 }

@@ -5,20 +5,50 @@ import Context from "../../provider/context";
 import Input from "./Input";
 import { Button } from "@mui/material";
 import { InertiaLink } from "@inertiajs/inertia-react";
+import CircularProgress from '@mui/material/CircularProgress';
+import { router } from '@inertiajs/react'
+import axios from "axios";
+import { Inertia } from "@inertiajs/inertia";
 
-
-
-export default function FormLogin() {
-    const { windowSize } = useContext(Context);
+export default function FormLogin({ failed, message }) {
+    const { windowSize, loginFailed, setLoginFailed } = useContext(Context);
 
     const [formProps, setFormProps] = useState({
         email: '',
         password: '',
     });
 
+    const [loading, setLoading] = useState(false);
+
+    const AttemptLogin = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.post(route('login-attempt'), {
+                credential: formProps
+            })
+
+            if (response.data.success) {
+                // window.location.href = route("index");
+                Inertia.get('/');
+            }
+
+            setLoginFailed(!response.data.success);
+        } catch (e) {
+            console.error(e);
+            console.log('gagal')
+        } finally {
+            setLoading(false);
+        }
+
+        setLoading(false);
+    }
 
     return (
-        <form className="bg-gray-50 p-5 px-16 flex flex-col justify-center min-w-[400px]"
+        <form
+            onSubmit={(e) => {
+                console.log('123')
+            }}
+            className="bg-gray-50 p-5 px-16 flex flex-col justify-center min-w-[400px]"
             style={{
                 width: windowSize.w > 550 ? 400 : windowSize.w,
             }}
@@ -72,10 +102,29 @@ export default function FormLogin() {
                 />
 
             </main>
-            <footer className="flex flex-col w-full justify-start mt-5">
-                <Button variant="contained" disableElevation
+            <footer className="flex flex-col w-full items-start mt-5">
+                <Button disableElevation
+                    display='flex'
+                    alignitems='center'
+                    justifycontent='center'
+                    variant={loading ? "outlined" : "contained"}
+                    onClick={() => {
+                        // setLoginFailed(!loginFailed);
+                        setLoading(true);
+                        AttemptLogin();
+                    }}
+                    disabled={loading}
+                    type="submit"
                 >
-                    <span className="py-1 px-3">Login</span>
+                    <CircularProgress
+                        color="inherit"
+                        size={20}
+                        sx={{
+                            // color: loading ? "blue" : "white",
+                            display: loading ? "block" : "none",
+                        }}
+                    />
+                    <span className="px-3 py-1">Login</span>
                 </Button>
                 <section className="text-sm mt-3">
                     Belum punya akun? <InertiaLink href={route("register")} className="text-blue-700 font-semibold" >Daftar sekarang</InertiaLink>

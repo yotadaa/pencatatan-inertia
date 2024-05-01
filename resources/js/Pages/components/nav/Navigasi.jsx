@@ -13,27 +13,27 @@ function Navigasi({ props }) {
     const { navPos, mouseDown } = props;
 
     const { isShrunk, setIsShrunk, wideWindow, windowSize, setNavHover, rightNav, properties } = useContext(Context);
-    const [pinNav, setPinNav] = useState(false);
+    const [pinNav, setPinNav] = useState(true);
     const theme = lightTheme;
 
     return (
         <motion.nav
             className='h-screen p-2'
             style={{
-                width: 80,
+                width: pinNav ? 299 : 80,
                 transform: 'translateX(-80px)',
                 position: wideWindow ? 'relative' : 'fixed',
                 left: pinNav ? 0 : navPos.x,
                 top: pinNav ? 0 : navPos.y,
-                fontFamily: 'segoe ui'
+                fontFamily: 'segoe ui',
+                transform: 'translateX(0px)',
             }}
             animate={{
                 width: isShrunk ? 250 : (pinNav ? 250 : (!wideWindow && pinNav ? windowSize.w : (!wideWindow && !pinNav ? 75 : (wideWindow && !pinNav ? 80 : 80)))),
                 height: !wideWindow ? (pinNav ? window.innerHeight : 80) : window.innerHeight,
-                transform: 'translateX(0px)',
             }}
             whileHover={{
-                width: wideWindow ? 250 : (pinNav ? 250 : 80),
+                width: wideWindow && isShrunk ? 250 : (pinNav ? 250 : 80),
                 transform: 'translateX(0px)',
             }}
 
@@ -72,6 +72,9 @@ function Navigasi({ props }) {
                         onClick={(event) => {
                             setIsShrunk(!isShrunk);
                             setPinNav(!pinNav);
+                            if (!pinNav) {
+                                setIsShrunk(true);
+                            }
                         }}
                     >
                         <img src={sampleLogo}
