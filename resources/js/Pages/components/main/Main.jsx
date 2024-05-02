@@ -5,7 +5,6 @@ import { lightTheme } from "../theme";
 import { useContext } from "react";
 import Context from "../../provider/context";
 import Content from "./Content";
-import { Link } from "@inertiajs/react";
 
 function Main({ isAuth, Element }) {
 
@@ -18,7 +17,7 @@ function Main({ isAuth, Element }) {
         y: 0
     })
 
-    const { navHover, wideWindow, setRightNav, rightNav, isShrunk } = useContext(Context);
+    const { navHover, wideWindow, setRightNav, rightNav, navStatus } = useContext(Context);
     const [mouseDown, setMouseDown] = useState(false);
 
     const resetNavPos = () => {

@@ -17,5 +17,6 @@ Route::get('/users', [AppController::class, 'users'])->name('users');
 Route::get('/settings', [AppController::class, 'settings'])->name('settings');
 
 Route::post('auth/login', [AuthController::class, 'login'])->name('login-attempt');
+Route::post('auth/register', [AuthController::class, 'register'])->name('register-attempt');
 Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout-attempt');
 Route::post('auth/attempted-login', [AuthController::class, 'isSucceedLogin'])->name('checkIfSucceedLogin');

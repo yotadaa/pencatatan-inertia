@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('group');
             $table->integer('kode');
             $table->integer('qty');
+            $table->float('total');
             $table->string('email');
             $table->integer('status');
             $table->tinyInteger('checked');

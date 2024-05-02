@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('id_brg');
             $table->string('email');
             $table->string('host');
+            $table->float('total');
             $table->timestamps();
         });
     }

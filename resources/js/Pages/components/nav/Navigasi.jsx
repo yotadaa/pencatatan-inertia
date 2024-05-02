@@ -10,38 +10,42 @@ import Context from '../../provider/context';
 
 function Navigasi({ props }) {
 
-    const { navPos, mouseDown } = props;
+    const { navPos } = props;
 
-    const { isShrunk, setIsShrunk, wideWindow, windowSize, setNavHover, rightNav, properties } = useContext(Context);
-    const [pinNav, setPinNav] = useState(true);
+    const { wideWindow, windowSize, setNavHover, rightNav, properties, navStatus, setNavStatus } = useContext(Context);
     const theme = lightTheme;
 
     return (
         <motion.nav
-            className='h-screen p-2'
+            className='h-screen p-2 fixed'
             style={{
-                width: pinNav ? 299 : 80,
+                width: navStatus.pinned ? 250 : 80,
                 transform: 'translateX(-80px)',
-                position: wideWindow ? 'relative' : 'fixed',
-                left: pinNav ? 0 : navPos.x,
-                top: pinNav ? 0 : navPos.y,
+                left: navStatus.pinned ? 0 : navPos.x,
+                top: navStatus.pinned ? 0 : navPos.y,
                 fontFamily: 'segoe ui',
                 transform: 'translateX(0px)',
             }}
             animate={{
-                width: isShrunk ? 250 : (pinNav ? 250 : (!wideWindow && pinNav ? windowSize.w : (!wideWindow && !pinNav ? 75 : (wideWindow && !pinNav ? 80 : 80)))),
-                height: !wideWindow ? (pinNav ? window.innerHeight : 80) : window.innerHeight,
+                width: navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : (!wideWindow && navStatus.pinned ? windowSize.w : (!wideWindow && !navStatus.pinned ? 75 : (wideWindow && !navStatus.pinned ? 80 : 80)))),
+                height: !wideWindow ? (navStatus.pinned ? window.innerHeight : 80) : window.innerHeight,
             }}
             whileHover={{
-                width: wideWindow && isShrunk ? 250 : (pinNav ? 250 : 80),
+                width: wideWindow && navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : 80),
                 transform: 'translateX(0px)',
             }}
 
             onMouseEnter={() => {
-                setIsShrunk(true);
+                setNavStatus(prev => ({
+                    ...prev,
+                    shrunk: true,
+                }))
             }}
             onMouseLeave={() => {
-                setIsShrunk(false);
+                setNavStatus(prev => ({
+                    ...prev,
+                    shrunk: false,
+                }))
             }}
 
             onMouseDown={(event) => {
@@ -65,16 +69,16 @@ function Navigasi({ props }) {
                         }}
                         animate={{
                             scale: 1,
-                            width: pinNav ? '100%' : 30,
-                            marginLeft: pinNav || isShrunk ? 0 : 3
+                            width: navStatus.pinned ? '100%' : 30,
+                            marginLeft: navStatus.pinned || navStatus.shrunk ? 0 : 3
                         }}
 
-                        onClick={(event) => {
-                            setIsShrunk(!isShrunk);
-                            setPinNav(!pinNav);
-                            if (!pinNav) {
-                                setIsShrunk(true);
-                            }
+                        onClick={() => {
+                            setNavStatus(prev => ({
+                                ...prev,
+                                pinned: !prev.pinned,
+                                shrunk: navStatus.pinned ? !prev.shrunk : true,
+                            }));
                         }}
                     >
                         <img src={sampleLogo}
@@ -86,12 +90,12 @@ function Navigasi({ props }) {
                             className='font-semibold'
                             style={{
                                 marginLeft: 10,
-                                opacity: pinNav || isShrunk && wideWindow ? 1 : 0,
+                                opacity: navStatus.pinned || navStatus.shrunk && wideWindow ? 1 : 0,
                             }}
                         >{properties.title}</p>
                     </motion.div>
                 </div>
-                <NavList isShrunk={isShrunk} pinNav={pinNav} />
+                <NavList isShrunk={navStatus.shrunk} navPinned={navStatus.pinned} />
             </div>
 
         </motion.nav >

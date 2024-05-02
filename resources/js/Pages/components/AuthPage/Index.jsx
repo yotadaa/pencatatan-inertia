@@ -43,8 +43,10 @@ const Images = ({ width }) => {
 
 
 export default function RegisterPage({ mode, failed, message }) {
-    const { windowSize, loginFailed, setLoginFailed } = useContext(Context);
-
+    const { windowSize, loginFailed, setLoginFailed, setProcessing } = useContext(Context);
+    useState(() => {
+        setProcessing(false)
+    }, [])
 
     return (
         <div className="flex justify-center w-screen overflow-x-hidden h-screen bg-slate-200"

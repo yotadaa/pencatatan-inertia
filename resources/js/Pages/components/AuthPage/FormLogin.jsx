@@ -6,47 +6,62 @@ import Input from "./Input";
 import { Button } from "@mui/material";
 import { InertiaLink } from "@inertiajs/inertia-react";
 import CircularProgress from '@mui/material/CircularProgress';
-import { router } from '@inertiajs/react'
 import axios from "axios";
 import { Inertia } from "@inertiajs/inertia";
 
-export default function FormLogin({ failed, message }) {
-    const { windowSize, loginFailed, setLoginFailed } = useContext(Context);
+export default function FormLogin() {
+    const { windowSize, setLoginFailed, setProcessing, setAuthFailedMessage } = useContext(Context);
 
     const [formProps, setFormProps] = useState({
-        email: '',
+        email: localStorage.getItem("saved-email") || "",
         password: '',
     });
 
     const [loading, setLoading] = useState(false);
 
-    const AttemptLogin = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.post(route('login-attempt'), {
-                credential: formProps
-            })
+    const AttemptLogin = async (e) => {
+        e.preventDefault();
+        if (!formProps.email || !formProps.password) {
+            setLoginFailed(true);
+            setAuthFailedMessage({
+                title: "Terjadi Kesalahan",
+                body: "Tolong isi semua input!",
+            });
+        } else {
+            setLoading(true);
+            try {
+                const response = await axios.post(route('login-attempt'), {
+                    credential: formProps
+                }, {
+                    withCredentials: true, // For sending cookies along with the request
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-            if (response.data.success) {
-                // window.location.href = route("index");
-                Inertia.get('/');
+                console.log(response.data);
+
+                if (response.data.success) {
+                    Inertia.visit(route("index"));
+                } else {
+                    setLoginFailed(true);
+                    setAuthFailedMessage({
+                        title: "Terjadi Kesalahan",
+                        body: "Periksa kembali email atau password",
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                setLoginFailed(true);
+            } finally {
+                setLoading(false);
             }
-
-            setLoginFailed(!response.data.success);
-        } catch (e) {
-            console.error(e);
-            console.log('gagal')
-        } finally {
-            setLoading(false);
         }
-
-        setLoading(false);
-    }
+    };
 
     return (
         <form
             onSubmit={(e) => {
-                console.log('123')
             }}
             className="bg-gray-50 p-5 px-16 flex flex-col justify-center min-w-[400px]"
             style={{
@@ -108,11 +123,7 @@ export default function FormLogin({ failed, message }) {
                     alignitems='center'
                     justifycontent='center'
                     variant={loading ? "outlined" : "contained"}
-                    onClick={() => {
-                        // setLoginFailed(!loginFailed);
-                        setLoading(true);
-                        AttemptLogin();
-                    }}
+                    onClick={AttemptLogin}
                     disabled={loading}
                     type="submit"
                 >
@@ -127,7 +138,13 @@ export default function FormLogin({ failed, message }) {
                     <span className="px-3 py-1">Login</span>
                 </Button>
                 <section className="text-sm mt-3">
-                    Belum punya akun? <InertiaLink href={route("register")} className="text-blue-700 font-semibold" >Daftar sekarang</InertiaLink>
+                    Belum punya akun?
+                    <InertiaLink
+                        href={route("register")} className="text-blue-700 font-semibold"
+                        onClick={() => {
+                            setProcessing(true)
+                        }}
+                    >Daftar sekarang</InertiaLink>
                 </section>
             </footer>
         </form>
