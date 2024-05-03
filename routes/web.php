@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [AppController::class, 'index'])->name('index');
+Route::get('/', [AppController::class, 'dashboard'])->name('index');
 
 Route::get('/register', [AppController::class, 'register'])->name('register');
 Route::get('/login', [AppController::class, 'login'])->name('login');

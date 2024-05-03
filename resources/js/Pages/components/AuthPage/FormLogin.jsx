@@ -8,6 +8,7 @@ import { InertiaLink } from "@inertiajs/inertia-react";
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
 import { Inertia } from "@inertiajs/inertia";
+import { setLocalStorage } from "../../assets/variables";
 
 export default function FormLogin() {
     const { windowSize, setLoginFailed, setProcessing, setAuthFailedMessage } = useContext(Context);
@@ -42,6 +43,7 @@ export default function FormLogin() {
                 console.log(response.data);
 
                 if (response.data.success) {
+                    localStorage.setItem("saved-email", formProps.email);
                     Inertia.visit(route("index"));
                 } else {
                     setLoginFailed(true);

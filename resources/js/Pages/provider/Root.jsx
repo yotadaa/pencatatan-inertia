@@ -7,9 +7,12 @@ import Main from '../components/main/Main';
 import Loading from '../components/other/Loading';
 import RegisterPage from '../components/AuthPage/Index';
 import { getLocalStorage, setLocalStorage } from '../assets/variables';
+import { retrieveCurrentMenu } from '../assets/nav/identity';
+import { menu } from '../assets/nav/identity';
 
-const Root = ({ isAuth, mode, failed, message }) => {
+const Root = ({ isAuth, mode, failed, message, props }) => {
 
+    const [currentMenu, setCurrentMenu] = useState(parseInt(retrieveCurrentMenu()) | 0);
     const [navHover, setNavHover] = useState(false)
     const [isShrunk, setIsShrunk] = useState(false);
     const [wideWindow, setWideWindow] = useState(true);
@@ -39,7 +42,6 @@ const Root = ({ isAuth, mode, failed, message }) => {
         } else {
             setWideWindow(true);
         }
-        console.log(wideWindow)
     }, [windowSize])
 
     const [loginFailed, setLoginFailed] = useState(false);
@@ -60,17 +62,17 @@ const Root = ({ isAuth, mode, failed, message }) => {
         setLocalStorage('nav-shrunk', navStatus.shrunk);
     }, [navStatus])
 
+
     const contextValue = {
         isShrunk, setIsShrunk, wideWindow, setWideWindow, windowSize, setNavHover, navHover,
         rightNav, setRightNav, properties, setProperties, loginFailed, setLoginFailed,
-        processing, setProcessing, authFailedMessage, setAuthFailedMessage, navStatus, setNavStatus
+        processing, setProcessing, authFailedMessage, setAuthFailedMessage, navStatus, setNavStatus, currentMenu, setCurrentMenu
     }
 
     return (
         <Context.Provider value={contextValue}>
             <Loading />
-            {isAuth ? <Main Element={Dashboard} isAuth={isAuth} /> : <RegisterPage failed={failed} message={message} mode={mode} />}
-            {/* <Main Element={Dashboard} /> */}
+            {isAuth ? <Main props={props} Element={menu[currentMenu].element} isAuth={isAuth} /> : <RegisterPage failed={failed} message={message} mode={mode} />}
         </Context.Provider>
     )
 };

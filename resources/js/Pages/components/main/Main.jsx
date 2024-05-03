@@ -6,7 +6,7 @@ import { useContext } from "react";
 import Context from "../../provider/context";
 import Content from "./Content";
 
-function Main({ isAuth, Element }) {
+function Main({ isAuth, Element, props }) {
 
     const getUrls = () => {
         return window.location.href.split("/").slice(-1)
@@ -77,7 +77,7 @@ function Main({ isAuth, Element }) {
             }}
         >
             <Navigasi props={{ navPos, mouseDown }} className='' />
-            <Content Element={Element} />
+            <Content props={props} Element={Element} />
 
         </div>
     )

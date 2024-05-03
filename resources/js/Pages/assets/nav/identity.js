@@ -9,7 +9,7 @@ import Inbound from '../../components/inbound/Inbound';
 import Outbound from '../../components/outbound/Outbound';
 import Users from '../../components/users/Users';
 import Settings from '../../components/settings/Settings';
-import Content from '../../components/main/Content';
+import Dashboard from '../../components/dashboard/Dashboard';
 
 export const menu = [
     {
@@ -17,7 +17,7 @@ export const menu = [
         icon: dashboardIcon,
         bg: '#E2E8F0',
         path: 'dashboard',
-        element: Content
+        element: Dashboard
 
     },
     {

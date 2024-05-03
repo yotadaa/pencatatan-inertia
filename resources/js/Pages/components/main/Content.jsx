@@ -2,7 +2,7 @@ import Context from "../../provider/context";
 import { useContext } from "react";
 import { motion } from "framer-motion";
 
-const Content = ({ Element }) => {
+const Content = ({ Element, props }) => {
 
     const { rightNav, wideWindow, navStatus } = useContext(Context);
 
@@ -19,7 +19,7 @@ const Content = ({ Element }) => {
                 left: navStatus.pinned || navStatus.shrunk ? 250 : 80,
             }}
         >
-            <div className="bg-red-300 w-full h-full"><Element /></div>
+            <Element props={props} />
         </motion.main>
     )
 }

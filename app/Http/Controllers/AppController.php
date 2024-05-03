@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -50,7 +50,15 @@ class AppController extends Controller
         if (!auth()->check()) {
             return Redirect::route('login');
         }
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        $props = [
+            "kategori" => DB::table('kategori')->where("email", auth()->user()->email)->get(),
+            "items"=> DB::table('items')->where("email", auth()->user()->email)->get(),
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
 
     public function items() {

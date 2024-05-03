@@ -7,7 +7,7 @@ import Context from '../../provider/context';
 
 function NavList({ isShrunk, navPinned }) {
 
-    const { setProcessing } = useContext(Context);
+    const { setProcessing, currentMenu, setCurrentMenu } = useContext(Context);
 
     const attemptLogout = async () => {
         try {
@@ -19,12 +19,6 @@ function NavList({ isShrunk, navPinned }) {
         } finally {
         }
     }
-
-    const [currentMenu, setCurrentMenu] = useState(parseInt(retrieveCurrentMenu()) | 0);
-
-    useEffect(() => {
-        setProcessing(false);
-    })
 
     return (
         <motion.div className='mt-5 p-1 flex flex-col'
@@ -55,9 +49,9 @@ function NavList({ isShrunk, navPinned }) {
                                 storeCurrentMenu(index);
                                 setCurrentMenu(index);
                                 if (currentMenu !== index) {
+                                    setProcessing(true);
                                     console.log(index)
                                     Inertia.visit(route(item.path));
-                                    setProcessing(true);
                                 }
                             }}
                         >
@@ -98,6 +92,9 @@ function NavList({ isShrunk, navPinned }) {
                     whileHover={{
                         backgroundColor: '#F87171',
                     }}
+                    onClick={() => {
+                        attemptLogout();
+                    }}
                 >
                     <motion.img
                         src={logoutIcon}
@@ -114,9 +111,6 @@ function NavList({ isShrunk, navPinned }) {
                             opacity: navPinned || isShrunk ? 1 : 0
                         }}
                         className='font-semibold'
-                        onClick={() => {
-                            attemptLogout();
-                        }}
                     >
                         Logout
                     </motion.div>
