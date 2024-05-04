@@ -3,6 +3,7 @@ import { generateUniqueColors } from "../../assets/variables";
 import Categories from "./Categories";
 import OutboundToday from "./OutboundToday";
 import Context from "../../provider/context";
+import CashFlowToday from "./CashFlowToday";
 
 export default function Dashboard({ props }) {
 
@@ -62,7 +63,10 @@ export default function Dashboard({ props }) {
             </header>
             <main className={`${shouldShrink ? 'block' : 'flex'} w-full`}>
                 <section className={`${shouldShrink ? 'w-full' : 'w-2/3'} p-3`}>
-                    <OutboundToday />
+                    <section className={`${shouldShrink ? "flex flex-col gap-0 justify-items-start" : " flex gap-4 "} `}>
+                        <OutboundToday windowSize={windowSize} />
+                        <CashFlowToday windowSize={windowSize} />
+                    </section>
                     <Categories categories={categories} />
                 </section>
                 <section className="w-1/3">

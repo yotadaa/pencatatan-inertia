@@ -91,3 +91,24 @@ function hsvToHex(h, s, v) {
 }
 
 
+export function formatNumber(number, options = {}) {
+    const {
+        decimalSeparator = '.',
+        thousandSeparator = ',',
+        decimalPlaces = 2
+    } = options;
+
+    // Convert the number to a string and split it into integer and decimal parts
+    const [integerPart, decimalPart] = Number(number).toFixed(decimalPlaces).split('.');
+
+    // Add thousand separators to the integer part
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+
+    // Join the integer and decimal parts with the decimal separator
+    let formattedNumber = formattedIntegerPart;
+    if (decimalPart) {
+        formattedNumber += decimalSeparator + decimalPart;
+    }
+
+    return formattedNumber;
+}
