@@ -12,14 +12,14 @@ function Navigasi({ props }) {
 
     const { navPos } = props;
 
-    const { wideWindow, windowSize, setNavHover, rightNav, properties, navStatus, setNavStatus } = useContext(Context);
+    const { wideWindow, windowSize, setNavHover, rightNav, properties, navStatus, setNavStatus, navHover } = useContext(Context);
     const theme = lightTheme;
 
     return (
         <motion.nav
             className='h-screen p-2 fixed'
             style={{
-                width: navStatus.pinned ? 250 : 80,
+                width: !wideWindow ? ('100%') : (navStatus.pinned ? 250 : 80),
                 transform: 'translateX(-80px)',
                 left: navStatus.pinned ? 0 : navPos.x,
                 top: navStatus.pinned ? 0 : navPos.y,
@@ -27,11 +27,11 @@ function Navigasi({ props }) {
                 transform: 'translateX(0px)',
             }}
             animate={{
-                width: navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : (!wideWindow && navStatus.pinned ? windowSize.w : (!wideWindow && !navStatus.pinned ? 75 : (wideWindow && !navStatus.pinned ? 80 : 80)))),
+                width: (!wideWindow && !navStatus.pinned) ? ('100%') : navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : (!wideWindow && navStatus.pinned ? windowSize.w : (!wideWindow && !navStatus.pinned ? 75 : (wideWindow && !navStatus.pinned ? 80 : 80)))),
                 height: !wideWindow ? (navStatus.pinned ? window.innerHeight : 80) : window.innerHeight,
             }}
             whileHover={{
-                width: wideWindow && navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : 80),
+                width: wideWindow && navStatus.shrunk ? 250 : (navStatus.pinned ? 250 : (!navStatus.pinned && !wideWindow ? '100%' : 80)),
                 transform: 'translateX(0px)',
             }}
 
@@ -41,18 +41,10 @@ function Navigasi({ props }) {
                     shrunk: true,
                 }))
             }}
-            onMouseLeave={() => {
-                setNavStatus(prev => ({
-                    ...prev,
-                    shrunk: false,
-                }))
-            }}
-
-            onMouseDown={(event) => {
-                setNavHover(true)
-            }}
-
-            onMouseUp={() => setNavHover(false)}
+            onMouseLeave={() => setNavStatus(prev => ({
+                ...prev,
+                shrunk: navStatus.pinned ? true : false,
+            }))}
         >
             <div
                 className={`${theme.navBase} w-full h-full rounded-md shadow-lg overflow-hidden p-1 select-none`}

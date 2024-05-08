@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Context from './context';
-import Dashboard from '../components/dashboard/Dashboard';
-import Main from '../components/main/Main';
 import Loading from '../components/other/Loading';
 import RegisterPage from '../components/AuthPage/Index';
 import { getLocalStorage, setLocalStorage } from '../assets/variables';
-import { retrieveCurrentMenu } from '../assets/nav/identity';
 import { menu } from '../assets/nav/identity';
+import Main from '../components/main/Main';
 
 const Root = ({ isAuth, mode, failed, message, props }) => {
 
-    const [currentMenu, setCurrentMenu] = useState(parseInt(retrieveCurrentMenu()) | 0);
+
+    const [currentMenu, setCurrentMenu] = useState(parseInt(props?.menu || "0"));
     const [navHover, setNavHover] = useState(false)
     const [isShrunk, setIsShrunk] = useState(false);
     const [wideWindow, setWideWindow] = useState(true);

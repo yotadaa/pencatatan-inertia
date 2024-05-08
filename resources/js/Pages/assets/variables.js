@@ -19,7 +19,7 @@ export function generateUniqueColors(N) {
     const goldenRatioConjugate = 0.618033988749895;
     let hue = Math.random();
     const saturation = 0.5;
-    const value = 0.85; // Adjust the brightness value as needed
+    const value = 0.85;
 
     for (let i = 0; i < N; i++) {
         hue += goldenRatioConjugate;
@@ -31,7 +31,7 @@ export function generateUniqueColors(N) {
     return colors;
 }
 
-function hsvToHex(h, s, v) {
+export function hsvToHex(h, s, v) {
     let r, g, b;
     let i = Math.floor(h * 6);
     let f = h * 6 - i;
@@ -76,12 +76,6 @@ function hsvToHex(h, s, v) {
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
     const hexColor = (luma > 0.5) ? '#000000' : '#FFFFFF';
 
-    // Adjust the brightness of the color to be slightly darker
-    const darkerValue = 0.7; // Adjust this value to control darkness
-    r *= darkerValue;
-    g *= darkerValue;
-    b *= darkerValue;
-
     const toHex = (x) => {
         const hex = Math.round(x * 255).toString(16);
         return hex.length === 1 ? '0' + hex : hex;
@@ -89,6 +83,7 @@ function hsvToHex(h, s, v) {
 
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
+
 
 
 export function formatNumber(number, options = {}) {

@@ -3,7 +3,7 @@
 
 export default function Container({ children, filter = 'blur(50px)' }) {
     return (
-        <div className="relative border border-gray-400 shadow-md rounded-md"
+        <div className="relative border border-gray-400 shadow-md rounded-md bg-gray-50"
         >
             <div
                 className="bg-white w-full h-full absolute rounded-md"

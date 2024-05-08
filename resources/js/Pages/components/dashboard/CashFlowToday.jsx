@@ -5,7 +5,7 @@ import NumberCounter from './NumberCounter'
 import CheckButton from './CheckButton'
 
 
-export default function CashFlowToday({ windowSize }) {
+export default function CashFlowToday({ windowSize, widthToShrink }) {
 
 
     const initialState = {
@@ -19,7 +19,7 @@ export default function CashFlowToday({ windowSize }) {
     const counter = [0, 1, 2, 3, 4]
 
     return (
-        <div className={`scrollbar style-3 relative rounded-md  shadow-sm overflow-x-auto overflow-y-hidden max-h-[118px]  shadow-emerald-600 ${windowSize.w > 600 ? "w-1/2" : "w-full"} mb-3`}
+        <div className={`scrollbar style-3 relative rounded-md shadow-sm overflow-x-auto overflow-y-hidden max-h-[118px]  shadow-emerald-600 ${windowSize.w > widthToShrink ? "w-1/2" : "w-full"} mb-3 md:w-full`}
             onClick={() => {
                 setCount(prev => ({
                     ...prev,
@@ -28,12 +28,12 @@ export default function CashFlowToday({ windowSize }) {
             }}
             style={{
                 width: '100%',
-                maxWidth: windowSize.w > 600 ? 300 : "100%",
+                // maxWidth: windowSize.w > widthToShrink ? 300 : "100%",
                 backgroundColor: "#ECFDF5",
                 marginLeft: 0,
             }}
         >
-            <div className='flex flex-col p-2 w-full min-w-[300px] bg-transparent'
+            <div className='flex flex-col p-2 w-full  bg-transparent'
                 style={{
                     zIndex: -1,
                 }}
@@ -53,7 +53,7 @@ export default function CashFlowToday({ windowSize }) {
                         </div>
                     </div>
                 </main>
-                <footer className='font-semibold text-md mt-1 text-emerald-600'
+                <footer className='font-semibold text-md mt-1 text-emerald-600 w-full'
                     style={{ zIndex: 3 }}
                 >
                     <span className={` ${count.percentage > 0 ? " text-emerald-600 bg-emerald-100 " : " text-rose-600 bg-rose-100 "} flex gap-2 items-center  px-1 rounded-lg font-medium text-sm py-1`}>
@@ -65,7 +65,7 @@ export default function CashFlowToday({ windowSize }) {
                             animate={{
                                 transform: count.percentage > 0 ? 'scaleY(1)' : 'scaleY(-1)',
                             }}
-                        /> Meningkat sebanyak<NumberCounter decimalPlaces={1} to={Math.round(count.percentage)} />%</span>
+                        /> <span className='sm:text-xs'>Meningkat sebanyak</span><NumberCounter decimalPlaces={1} to={Math.round(count.percentage)} />%</span>
                 </footer>
             </div>
             <div
@@ -73,7 +73,7 @@ export default function CashFlowToday({ windowSize }) {
                     position: "absolute",
                     right: 0,
                     top: 8,
-                    zIndex: 2,
+                    zIndex: 3,
                     overflowX: 'hidden',
                     display: 'flex',
                     justifyContent: 'center',
@@ -86,7 +86,7 @@ export default function CashFlowToday({ windowSize }) {
                 </CheckButton>
             </div>
             <div
-                className='h-full absolute left-0 top-0 min-w-[300px] bg-transparent w-full overflow-hidden'
+                className='h-full absolute left-0 top-0  bg-transparent w-full overflow-hidden'
                 style={{
                     zIndex: 1
                 }}

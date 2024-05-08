@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import logoutIcon from '../../assets/logout.png';
 import { Inertia } from "@inertiajs/inertia";
 import Context from '../../provider/context';
+import { router } from '@inertiajs/react';
 
 function NavList({ isShrunk, navPinned }) {
 
@@ -20,6 +21,8 @@ function NavList({ isShrunk, navPinned }) {
         }
     }
 
+    const [hoverMenu, setHoverMenu] = useState(-1);
+
     return (
         <motion.div className='mt-5 p-1 flex flex-col'
             style={{
@@ -30,19 +33,19 @@ function NavList({ isShrunk, navPinned }) {
             <ul className=''>
                 {menu.map((item, index) => (
                     <div key={index}>
-                        <motion.li
+                        <li
                             className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2`}
                             style={{
                                 gap: 10,
-                                backgroundColor: index === currentMenu ? item.bg : 'transparent',
-                            }}
-                            animate={{
-                                backgroundColor: index === currentMenu ? item.bg : '#F9FAFB',
+                                backgroundColor: index === currentMenu || hoverMenu === index ? item.bg : '#F9FAFB',
                                 transform: !isShrunk && !navPinned ? 'translateX(0px)' : 'translateX(0px)',
                                 width: isShrunk || navPinned ? 215 : 40
                             }}
-                            whileHover={{
-                                backgroundColor: item.bg,
+                            onMouseEnter={() => {
+                                setHoverMenu(index);
+                            }}
+                            onMouseLeave={() => {
+                                setHoverMenu(-1);
                             }}
 
                             onClick={() => {
@@ -51,7 +54,9 @@ function NavList({ isShrunk, navPinned }) {
                                 if (currentMenu !== index) {
                                     setProcessing(true);
                                     console.log(index)
-                                    Inertia.visit(route(item.path));
+                                    Inertia.get(route(item.path));
+
+                                    // router.get(route(item.path, { method: "GET" }));
                                 }
                             }}
                         >
@@ -76,21 +81,16 @@ function NavList({ isShrunk, navPinned }) {
                             >
                                 {item.name}
                             </motion.div>
-                        </motion.li>
+                        </li>
                     </div >
                 ))}
-                <motion.li
-                    className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2 `}
+                <li
+                    className={`p-[5px] cursor-pointer h-10 rounded-full flex items-center mb-2 hover:bg-rose-400 `}
                     style={{
                         gap: 10,
-                    }}
-                    animate={{
                         transform: !isShrunk && !navPinned ? 'translateX(0px)' : 'translateX(0px)',
                         width: isShrunk || navPinned ? 215 : 40,
                         opacity: 1,
-                    }}
-                    whileHover={{
-                        backgroundColor: '#F87171',
                     }}
                     onClick={() => {
                         attemptLogout();
@@ -114,7 +114,7 @@ function NavList({ isShrunk, navPinned }) {
                     >
                         Logout
                     </motion.div>
-                </motion.li>
+                </li>
             </ul>
         </motion.div >
     )

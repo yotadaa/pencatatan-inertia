@@ -11,6 +11,11 @@ class AppController extends Controller
     //
 
     public function __construct() {
+        if (auth()->check()){
+            $this->kategori = DB::table('kategori')->where("email", auth()->user()->email)->get();
+            $this->items = DB::table('items')->where("email", auth()->user()->email)->get();
+
+        }
     }
 
     private function shouldLogin() {
@@ -53,6 +58,7 @@ class AppController extends Controller
         $props = [
             "kategori" => DB::table('kategori')->where("email", auth()->user()->email)->get(),
             "items"=> DB::table('items')->where("email", auth()->user()->email)->get(),
+            "menu"=> 0,
         ];
         return Inertia::render('App', [
             'isAuth' => auth()->check(),
@@ -65,30 +71,70 @@ class AppController extends Controller
         if (!auth()->check()) {
             return Redirect::route('login');
         }
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        $props = [
+            "menu" => 1,
+            "kategori" => $this->kategori,
+            "items"=> $this->items,
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
 
     public function inbound() {
         if (!auth()->check()) {
             return Redirect::route('login');
         }
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        $props = [
+            "menu" => 2,
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
     public function outbound() {
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        if (!auth()->check()) {
+            return Redirect::route('login');
+        }
+        $props = [
+            "menu" => 3,
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
 
     public function users() {
         if (!auth()->check()) {
             return Redirect::route('login');
         }
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        $props = [
+            "menu" => 4,
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
 
     public function settings() {
         if (!auth()->check()) {
             return Redirect::route('login');
         }
-        return Inertia::render('App', ['isAuth' =>auth()->check(), "mode" => true]);
+        $props = [
+            "menu" => 5,
+        ];
+        return Inertia::render('App', [
+            'isAuth' => auth()->check(),
+            "mode" => true,
+            "props" => $props,
+        ]);
     }
 }

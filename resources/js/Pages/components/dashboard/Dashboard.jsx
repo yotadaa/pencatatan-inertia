@@ -4,6 +4,8 @@ import Categories from "./Categories";
 import OutboundToday from "./OutboundToday";
 import Context from "../../provider/context";
 import CashFlowToday from "./CashFlowToday";
+import OutboundOverview from "./OutboundsOverview";
+import InboundsOverview from "./InboundsOverview";
 
 export default function Dashboard({ props }) {
 
@@ -32,7 +34,7 @@ export default function Dashboard({ props }) {
 
     const [shouldShrink, setShouldShrink] = useState(false);
     useEffect(() => {
-        if (windowSize.w < 600) {
+        if (windowSize.w < 700) {
             setShouldShrink(true)
         } else {
             setShouldShrink(false)
@@ -41,7 +43,7 @@ export default function Dashboard({ props }) {
     }, [windowSize])
 
     return (
-        <div className="w-full">
+        <div className="w-full style-3 pb-32">
             <header className="w-full">
                 <h1
                     className="text-xl font-thin"
@@ -52,24 +54,27 @@ export default function Dashboard({ props }) {
                 >
                     Dashboard
                 </h1>
-                <section
-                    className="text-base font-normal"
+                <h1
+                    className="text-xl font-thin mt-5"
                     style={{
-                        fontWeight: 300
+                        fontSize: 25,
                     }}
                 >
-                    Review barang kamu
-                </section>
+                    Selamat Datang, <span className="font-semibold">Mukhtada</span>
+                </h1>
             </header>
-            <main className={`${shouldShrink ? 'block' : 'flex'} w-full`}>
-                <section className={`${shouldShrink ? 'w-full' : 'w-2/3'} p-3`}>
-                    <section className={`${shouldShrink ? "flex flex-col gap-0 justify-items-start" : " flex gap-4 "} `}>
-                        <OutboundToday windowSize={windowSize} />
-                        <CashFlowToday windowSize={windowSize} />
+            <main className={`${shouldShrink ? 'flex-col' : 'flex-row'} flex w-full`}>
+                <section className={`${shouldShrink ? 'w-full' : 'w-2/3'} p-0 py-3 flex flex-col gap-4`}>
+                    {/* <section className={`${shouldShrink ? "flex flex-col gap-0 justify-items-start" : " flex gap-4 "} `}> */}
+                    <section className="flex flex-col gap-0 justify-items-start md:flex-row md:gap-4">
+                        <OutboundToday windowSize={windowSize} widthToShrink={700} />
+                        <CashFlowToday windowSize={windowSize} widthToShrink={700} />
                     </section>
-                    <Categories categories={categories} />
+                    <Categories categories={categories} windowSize={windowSize} items={items.slice(0, 10)} />
                 </section>
-                <section className="w-1/3">
+                <section className={`${shouldShrink ? "w-full" : "w-1/3"} p-2 flex flex-col gap-3`}>
+                    <OutboundOverview categories={categories} windowSize={windowSize} />
+                    <InboundsOverview categories={categories} windowSize={windowSize} />
                 </section>
             </main>
         </div>

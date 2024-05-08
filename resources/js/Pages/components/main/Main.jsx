@@ -48,7 +48,7 @@ function Main({ isAuth, Element, props }) {
     }, [])
 
     return (
-        <div className={`w-screen h-screen ${theme.base} overflow-hidden flex`}
+        <div className={`w-screen h-screen ${theme.base} style-3 overflow-hidden flex`}
             style={{
                 cursor: (mouseDown && navHover) ? 'move' : 'default',
                 transform: rightNav ? 'scaleX(-1)' : 'scaleX(1)'

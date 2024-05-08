@@ -94,6 +94,7 @@ export default function FormLogin() {
             <main className="gap-y-[5px] flex flex-col">
 
                 <Input
+                    type="email"
                     onChange={(e) => {
                         setFormProps(prevs => ({
                             ...prevs,

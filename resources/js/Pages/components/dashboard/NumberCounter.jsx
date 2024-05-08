@@ -18,7 +18,7 @@ function NumberCounter({ from = 0, to, decimalPlaces = 2 }) {
         return () => controls.stop();
     }, [from, to]);
 
-    return <p style={{ display: "inline" }} ref={nodeRef} />;
+    return <p style={{ display: "inline-flex" }} ref={nodeRef} />;
 }
 
 export default NumberCounter;

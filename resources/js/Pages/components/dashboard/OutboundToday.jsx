@@ -4,7 +4,7 @@ import increaseIcon from '../../assets/increase.png'
 import logsIcon from '../../assets/checklist.png'
 import CheckButton from './CheckButton';
 
-export default function OutboundToday({ windowSize }) {
+export default function OutboundToday({ windowSize, widthToShrink }) {
 
 
     const initialState = {
@@ -32,7 +32,7 @@ export default function OutboundToday({ windowSize }) {
     }, [count])
     return (
         <div className={`relative bg-emerald-50  rounded-md flex flex-col p-2 shadow-sm overflow-x-auto overflow-y-hidden max-h-[118px]  shadow-emerald-600 mb-3
-        ${windowSize.w > 600 ? "w-1/2" : "w-full"}`}
+        ${windowSize.w > widthToShrink ? "w-1/2" : "w-full"}`}
             onClick={() => {
                 setCount(prev => ({
                     ...prev,

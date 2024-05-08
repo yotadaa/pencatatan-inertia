@@ -2,13 +2,14 @@
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 
-export default function CheckButton(props) {
+export default function CheckButton({ children, Icon = ManageSearchIcon, onClick = () => { }, className = "" }) {
     return (
         <div
-            className='bg-yellow-300 font-medium rounded-md px-2 flex text-sm items-center shadow-md cursor-pointer'
+            className={`hover:bg-yellow-200 bg-yellow-300 font-medium rounded-md px-2 flex text-sm items-center shadow-md cursor-pointer w-fit ` + className}
+            onClick={onClick}
         >
-            <ManageSearchIcon />
-            <div>{props.children}</div>
+            <Icon />
+            <div>{children}</div>
         </div>
     )
 }
