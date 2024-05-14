@@ -10,6 +10,7 @@ import Outbound from '../../components/outbound/Outbound';
 import Users from '../../components/users/Users';
 import Settings from '../../components/settings/Settings';
 import Dashboard from '../../components/dashboard/Dashboard';
+import DaftarKategori from '../../components/items/DaftarKategori/DaftarKategori';
 
 export const menu = [
     {
@@ -55,6 +56,37 @@ export const menu = [
         path: 'settings',
         element: Settings
     },
+];
+
+export const elements = [
+    {
+        name: 'Dashboard',
+        element: Dashboard
+    },
+    {
+        name: 'Items',
+        element: Items
+    },
+    {
+        name: 'Inbound',
+        element: Inbound
+    },
+    {
+        name: 'Outbound',
+        element: Outbound
+    },
+    {
+        name: 'User',
+        element: Users
+    },
+    {
+        name: 'Pengaturan',
+        element: Settings
+    },
+    {
+        name: 'Daftar Kategori',
+        element: DaftarKategori
+    }
 ];
 
 export function storeCurrentMenu(value) {

@@ -1,6 +1,6 @@
 
 import { formatNumber } from "../../../assets/variables";
-import CheckButton from "../CheckButton";
+import CheckButton from "../../other/CustomButton";
 
 export default function Table({ categories, items, inbound = false }) {
     return (

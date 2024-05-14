@@ -6,10 +6,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 
-function App({ isAuth, mode = true, failed = false, message = "", props }) {
+function App({ isAuth, mode = true, failed = false, message = "", props, url }) {
     console.log(isAuth, mode)
     return (
-        <Root isAuth={isAuth} mode={mode} failed={failed} message={message} props={props} />
+        <Root url={url} isAuth={isAuth} mode={mode} failed={failed} message={message} props={props} />
     );
 }
 

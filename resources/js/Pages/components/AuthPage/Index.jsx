@@ -42,10 +42,10 @@ const Images = ({ width }) => {
 }
 
 
-export default function RegisterPage({ mode, failed, message }) {
+export default function RegisterPage({ mode, failed, message, url }) {
     const { windowSize, loginFailed, setLoginFailed, setProcessing } = useContext(Context);
     useState(() => {
-        setProcessing(false)
+        setProcessing(false);
     }, [])
 
     return (
@@ -60,7 +60,7 @@ export default function RegisterPage({ mode, failed, message }) {
                     flexDirection: windowSize.w > 550 ? 'row' : 'column',
                 }}
             >
-                {mode ? <FormRegister /> : <FormLogin failed={failed} message={message} setLoginFailed={setLoginFailed} loginFailed={loginFailed} />}
+                {mode ? <FormRegister /> : <FormLogin failed={failed} message={message} setLoginFailed={setLoginFailed} loginFailed={loginFailed} url={url} />}
                 <Images width={windowSize.w} />
             </div>
         </div>

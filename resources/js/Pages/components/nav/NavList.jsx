@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
-import { menu, storeCurrentMenu, retrieveCurrentMenu } from '../../assets/nav/identity';
-import { useContext, useEffect, useState } from 'react';
+import { menu, storeCurrentMenu } from '../../assets/nav/identity';
+import { useContext, useState } from 'react';
 import logoutIcon from '../../assets/logout.png';
 import { Inertia } from "@inertiajs/inertia";
 import Context from '../../provider/context';
-import { router } from '@inertiajs/react';
 
 function NavList({ isShrunk, navPinned }) {
 
@@ -16,8 +15,17 @@ function NavList({ isShrunk, navPinned }) {
             Inertia.post('/auth/logout')
         } catch (e) {
             console.error(e);
-            console.log('Login tidak berhasil')
+            console.log('Logout tidak berhasil')
         } finally {
+        }
+    }
+
+    const attemptChangePage = async (item, index) => {
+        setProcessing(true);
+        storeCurrentMenu(index);
+        if (currentMenu !== index) {
+            console.log(index);
+            Inertia.get(route(item.path));
         }
     }
 
@@ -49,15 +57,7 @@ function NavList({ isShrunk, navPinned }) {
                             }}
 
                             onClick={() => {
-                                storeCurrentMenu(index);
-                                setCurrentMenu(index);
-                                if (currentMenu !== index) {
-                                    setProcessing(true);
-                                    console.log(index)
-                                    Inertia.get(route(item.path));
-
-                                    // router.get(route(item.path, { method: "GET" }));
-                                }
+                                attemptChangePage(item, index);
                             }}
                         >
                             <motion.img

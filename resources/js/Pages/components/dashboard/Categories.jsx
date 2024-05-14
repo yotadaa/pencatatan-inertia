@@ -1,14 +1,14 @@
 import ReactApexChart from "react-apexcharts";
 import Container from "../other/Container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NumberCounter from './NumberCounter'
-import CheckButton from "./CheckButton";
-import { motion } from "framer-motion";
+import CheckButton from "../other/CustomButton";
+import { Inertia } from "@inertiajs/inertia";
 import { Tooltip, Zoom } from "@mui/material";
 
 
 
-export default function Categories({ categories, windowSize, items }) {
+export default function Categories({ categories, setProcessing }) {
 
     function sortArrays(array1, array2) {
         const combinedArray = array1.map((value, index) => ({ value1: value, value2: array2[index] }));
@@ -21,9 +21,12 @@ export default function Categories({ categories, windowSize, items }) {
         return [sortedArray1, sortedArray2];
     }
 
-    const [kategori, jumlah] = sortArrays(categories.nama, categories.count);
     const [itemHover, setItemHover] = useState(-1);
-    const counter = [0, 1, 2, 3, 4]
+
+    const [properties, setProperties] = useState({
+        jumlah: categories.count ? categories.count.reduce((a, b) => a + b, 0) : 0,
+        nama: categories.nama
+    })
 
     const [chartProps, setChartProps] = useState({
         option: {
@@ -32,7 +35,7 @@ export default function Categories({ categories, windowSize, items }) {
                 width: 300,
                 event: {
                     click: function (val) {
-                        console.log(val);
+
                     }
                 },
                 redrawOnWindowResize: true,
@@ -48,7 +51,6 @@ export default function Categories({ categories, windowSize, items }) {
                     },
                     event: {
                         click: function (val) {
-                            console.log(val);
                         }
                     }
                 }
@@ -57,7 +59,6 @@ export default function Categories({ categories, windowSize, items }) {
                 bar: {
                     event: {
                         click: function (val) {
-                            console.log(val);
                         }
                     }
                 }
@@ -68,8 +69,8 @@ export default function Categories({ categories, windowSize, items }) {
             stroke: {
                 width: 1
             },
-            colors: categories.color,
-            labels: kategori,
+            colors: properties.color,
+            labels: properties.nama,
             tooltip: {
                 enabled: true,
                 labels: {
@@ -96,11 +97,31 @@ export default function Categories({ categories, windowSize, items }) {
         }
     });
 
+    useEffect(() => {
+        setProperties(prevs => ({
+            ...prevs,
+            jumlah: categories.count ? categories.count.reduce((a, b) => a + b, 0) : 0,
+            nama: categories.nama,
+            color: categories.color
+        }));
+        setChartProps(prevs => ({
+            ...prevs,
+            option: {
+                ...prevs.option,
+                labels: categories.nama,
+                colors: categories.color
+            }
+        }));
+    }, [categories.count]);
+
+
+    useEffect(() => {
+    }, [])
 
 
     return (
 
-        <div className="bg-gray-50 rounded-md shadow-md border-gray-400 border overflow-y-hidden ">
+        <div className="bg-gray-50 rounded-md shadow-md border-gray-400 border overflow-y- ">
             <section className="relative overflow-x-auto style-3 mr-0 overflow-y-hidden">
                 <section className="p-2 min-w-[500px]">
                     <main className="flex w-full h-full gap-1"
@@ -114,7 +135,7 @@ export default function Categories({ categories, windowSize, items }) {
                             >
                                 <ReactApexChart
                                     options={chartProps.option}
-                                    series={jumlah}
+                                    series={Object.keys(categories.count).map(o => categories.count[o])}
                                     type="donut"
                                     width="300"
                                     className=""
@@ -122,7 +143,7 @@ export default function Categories({ categories, windowSize, items }) {
                             </div>
                             <div id='this' className="bg-transparent absolute left-0 top-0 w-full flex-col h-full flex justify-center items-center" style={{ pointerEvents: 'none' }}>
                                 <section className="text-6xl text-emerald-600 drop-shadow-md font-bold">
-                                    <NumberCounter to={jumlah.reduce((a, b) => a + b, 0)} decimalPlaces={0} />
+                                    <NumberCounter to={properties.jumlah} decimalPlaces={0} />
                                 </section>
                                 <section className="font-medium text-xl text-emerald-600">
                                     Item
@@ -138,10 +159,23 @@ export default function Categories({ categories, windowSize, items }) {
                             </section>
                             <section className="flex flex-col gap-2 w-full">
                                 <div className="flex flex-wrap gap-2 w-full">
-                                    {kategori.map((item, index) =>
+                                    {categories.nama.map((item, index) =>
                                         <div
                                             key={index}
                                             className="flex gap-1 justify-between items-center hover:contrat-125"
+                                            onClick={
+                                                () => {
+                                                    setProcessing(true);
+                                                    Inertia.visit(route("items-o", {
+                                                        page: 1,
+                                                        entry: 10,
+                                                        by: "asc",
+                                                        sort: 9,
+                                                        category: index,
+                                                        query: '*',
+                                                    }))
+                                                }
+                                            }
                                             onMouseEnter={() => setItemHover(index)}
                                             onMouseLeave={() => setItemHover(-1)}
                                         >
@@ -153,7 +187,7 @@ export default function Categories({ categories, windowSize, items }) {
                                                     className="shadow-md text-sm p-1 rounded-md flex justify-between items-center hover:contrast-125 cursor-pointer font-medium contrast-75 gap-2"
                                                 >
                                                     <span>{item}</span>
-                                                    <span className="bg-white shadow-sm px-1 rounded-md">{jumlah[index]}</span>
+                                                    <span className="bg-white shadow-sm px-1 rounded-md">{categories.count[index]}</span>
                                                 </div>
                                             </Tooltip>
                                         </div>
@@ -162,7 +196,7 @@ export default function Categories({ categories, windowSize, items }) {
 
                                 <CheckButton
                                     onClick={() => {
-                                        console.log("Clicked")
+                                        // console.log("Clicked")
                                     }}
                                 ><div className="py-1">Lebih Lanjut</div></CheckButton>
                             </section>

@@ -10,7 +10,7 @@ import axios from "axios";
 import { Inertia } from "@inertiajs/inertia";
 import { setLocalStorage } from "../../assets/variables";
 
-export default function FormLogin() {
+export default function FormLogin({ url }) {
     const { windowSize, setLoginFailed, setProcessing, setAuthFailedMessage } = useContext(Context);
 
     const [formProps, setFormProps] = useState({
@@ -44,7 +44,11 @@ export default function FormLogin() {
 
                 if (response.data.success) {
                     localStorage.setItem("saved-email", formProps.email);
-                    Inertia.visit(route("index"));
+                    if (url.valid) {
+                        Inertia.visit(url.url);
+                    } else {
+                        Inertia.visit(route("index"));
+                    }
                 } else {
                     setLoginFailed(true);
                     setAuthFailedMessage({

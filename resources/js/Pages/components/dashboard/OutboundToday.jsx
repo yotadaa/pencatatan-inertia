@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import increaseIcon from '../../assets/increase.png'
 import logsIcon from '../../assets/checklist.png'
-import CheckButton from './CheckButton';
+import CheckButton from '../other/CustomButton';
 
 export default function OutboundToday({ windowSize, widthToShrink }) {
 

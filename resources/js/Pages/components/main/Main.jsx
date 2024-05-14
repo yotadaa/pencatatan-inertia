@@ -5,6 +5,7 @@ import { lightTheme } from "../theme";
 import { useContext } from "react";
 import Context from "../../provider/context";
 import Content from "./Content";
+import { setLocalStorage } from "../../assets/variables";
 
 function Main({ isAuth, Element, props }) {
 
@@ -45,6 +46,7 @@ function Main({ isAuth, Element, props }) {
                 window.location.href = '/login';
             }
         }
+
     }, [])
 
     return (

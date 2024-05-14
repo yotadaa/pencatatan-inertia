@@ -5,13 +5,14 @@ import Context from './context';
 import Loading from '../components/other/Loading';
 import RegisterPage from '../components/AuthPage/Index';
 import { getLocalStorage, setLocalStorage } from '../assets/variables';
-import { menu } from '../assets/nav/identity';
+import { menu, elements } from '../assets/nav/identity';
 import Main from '../components/main/Main';
+import ItemsOverlay from '../components/items/ItemsOverlay';
 
-const Root = ({ isAuth, mode, failed, message, props }) => {
-
+const Root = ({ isAuth, mode, failed, message, props, url }) => {
 
     const [currentMenu, setCurrentMenu] = useState(parseInt(props?.menu || "0"));
+    const [elementIndex, setElementIndex] = useState(parseInt(props?.element || "0"));
     const [navHover, setNavHover] = useState(false)
     const [isShrunk, setIsShrunk] = useState(false);
     const [wideWindow, setWideWindow] = useState(true);
@@ -50,6 +51,9 @@ const Root = ({ isAuth, mode, failed, message, props }) => {
         body: '',
     })
 
+    const [itemDetail, setItemDetail] = useState(null);
+    const [viewDetail, setViewDetail] = useState(false);
+
     const [navStatus, setNavStatus] = useState({
         pinned: getLocalStorage('nav-pinned') === null ? true : (getLocalStorage('nav-pinned')),
         shrunk: getLocalStorage('nav-shrunk') === null ? false : (getLocalStorage('nav-pinned')),
@@ -61,17 +65,21 @@ const Root = ({ isAuth, mode, failed, message, props }) => {
         setLocalStorage('nav-shrunk', navStatus.shrunk);
     }, [navStatus])
 
+    useEffect(() => {
+        setLocalStorage("last-url", window.location.href);
+    }, [])
 
     const contextValue = {
         isShrunk, setIsShrunk, wideWindow, setWideWindow, windowSize, setNavHover, navHover,
         rightNav, setRightNav, properties, setProperties, loginFailed, setLoginFailed,
-        processing, setProcessing, authFailedMessage, setAuthFailedMessage, navStatus, setNavStatus, currentMenu, setCurrentMenu
+        processing, setProcessing, authFailedMessage, setAuthFailedMessage, navStatus, setNavStatus, currentMenu, setCurrentMenu, itemDetail, setItemDetail, viewDetail, setViewDetail
     }
 
     return (
         <Context.Provider value={contextValue}>
             <Loading />
-            {isAuth ? <Main props={props} Element={menu[currentMenu].element} isAuth={isAuth} /> : <RegisterPage failed={failed} message={message} mode={mode} />}
+            <ItemsOverlay />
+            {isAuth ? <Main props={props} Element={elements[elementIndex].element} isAuth={isAuth} /> : <RegisterPage failed={failed} url={url} message={message} mode={mode} />}
         </Context.Provider>
     )
 };
